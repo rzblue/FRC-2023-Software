@@ -82,6 +82,7 @@ public class Arm extends SubsystemBase implements Loggable {
     setDefaultCommand(holdPositionCommand().withName("Default Hold Position"));
 
     controller.reset(getPosition());
+    controller.setTolerance(Units.degreesToRadians(5));
     setGoal(ArmPosition.STOW.valueRadians);
 
     m_armTower.setColor(new Color8Bit(Color.kBlue));

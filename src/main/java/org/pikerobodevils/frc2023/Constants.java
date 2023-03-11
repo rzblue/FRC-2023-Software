@@ -88,8 +88,8 @@ public final class Constants {
     // The reduction between the motors and the arm.
     public static final double ARM_REDUCTION = 5 * 5 * (64.0 / 14);
 
-    public static final double COM_DISTANCE = Units.inchesToMeters(25);
-    public static final double MASS = Units.lbsToKilograms(15);
+    public static final double COM_DISTANCE = Units.inchesToMeters(20);
+    public static final double MASS = Units.lbsToKilograms(12);
 
     public static final double MOI_KG_M_SQUARED = MASS * (Math.pow(COM_DISTANCE, 2));
   }
