@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import org.pikerobodevils.lib.HealthMonitor;
+import org.tinylog.Logger;
 
 public class SparkMax extends CANSparkMax {
 
@@ -87,13 +88,13 @@ public class SparkMax extends CANSparkMax {
     m_mutatorChain = new ArrayList<>();
     HealthMonitor.monitor(() -> sparkmaxMonitorFunction(this), () -> reinitFunction());
     m_sparkMaxes.add(this);
-    // Logger.tag("SparkMax").debug("Initializing SparkMax with Id {}", canId);
+    Logger.tag("SparkMax").debug("Initializing SparkMax with Id {}", canId);
     if (m_burnFlashCnt > 0) {
-      /*Logger.tag("SparkMax")
-      .warn(
-          "SparkMax with ID {} initialized after burning flash, flash count {}",
-          canId,
-          m_burnFlashCnt);*/
+      Logger.tag("SparkMax")
+          .warn(
+              "SparkMax with ID {} initialized after burning flash, flash count {}",
+              canId,
+              m_burnFlashCnt);
     }
     s_monitor.add(this);
   }
@@ -120,14 +121,16 @@ public class SparkMax extends CANSparkMax {
 
     int setAttemptNumber = 0;
     while (initialize.apply(this, true) != true) {
-      /**
-       * Logger.tag("Spark Max") .warn( "Spark Max ID {}: Failed to initialize, attempt {} of {}",
-       * getDeviceId(), setAttemptNumber, kParameterSetAttemptCount);
-       */
+      Logger.tag("Spark Max")
+          .warn(
+              "Spark Max ID {}: Failed to initialize, attempt {} of {}",
+              getDeviceId(),
+              setAttemptNumber,
+              kParameterSetAttemptCount);
       setAttemptNumber++;
 
       if (setAttemptNumber >= kParameterSetAttemptCount) {
-        // Logger.tag("Spark Max").error("Spark Max ID {}: Failed to initialize!!", getDeviceId());
+        Logger.tag("Spark Max").error("Spark Max ID {}: Failed to initialize!!", getDeviceId());
         configSuccessful = false;
         break;
       }
@@ -152,17 +155,17 @@ public class SparkMax extends CANSparkMax {
 
     int setAttemptNumber = 0;
     while (result == null || result != true) {
-      /*Logger.tag("Spark Max")
-      .warn(
-          "Spark Max ID {}: Failed to run mutator, attempt {} of {}",
-          getDeviceId(),
-          setAttemptNumber,
-          kParameterSetAttemptCount);*/
+      Logger.tag("Spark Max")
+          .warn(
+              "Spark Max ID {}: Failed to run mutator, attempt {} of {}",
+              getDeviceId(),
+              setAttemptNumber,
+              kParameterSetAttemptCount);
       setAttemptNumber++;
 
       if (setAttemptNumber >= kParameterSetAttemptCount) {
-        /*Logger.tag("Spark Max")
-        .error("Spark Max ID {}: Failed to run mutator function!!", getDeviceId());*/
+        Logger.tag("Spark Max")
+            .error("Spark Max ID {}: Failed to run mutator function!!", getDeviceId());
         configSuccessful = false;
         break;
       }
@@ -272,16 +275,16 @@ public class SparkMax extends CANSparkMax {
    * safety.
    */
   public static void burnFlashInSync() {
-    // Logger.tag("SparkMax").debug("Burning Flash Count: {}", ++m_burnFlashCnt);
+    Logger.tag("SparkMax").debug("Burning Flash Count: {}", ++m_burnFlashCnt);
     Timer.delay(0.25);
     for (SparkMax max : m_sparkMaxes) {
-      // Logger.tag("SparkMax").trace("Burning flash for Can ID {}", max.getDeviceId());
+      Logger.tag("SparkMax").trace("Burning flash for Can ID {}", max.getDeviceId());
       max.burnFlash();
       // Enough time to not spam the bus too bad
       Timer.delay(0.005);
     }
     Timer.delay(0.25);
-    // Logger.tag("SparkMax").debug("Burn Flash Complete.");
+    Logger.tag("SparkMax").debug("Burn Flash Complete.");
   }
 
   public static boolean configSuccessful() {
