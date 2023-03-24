@@ -11,6 +11,8 @@ package org.pikerobodevils.lib.vendor;
  */
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.tinylog.Logger;
+
 import java.util.HashMap;
 
 /** This is a basic monitor class separate from the HealthMonitor setup. */
@@ -41,11 +43,11 @@ public class SparkMaxMonitor extends SubsystemBase {
         (sparkMax, prevFault) -> {
           short faults = sparkMax.getStickyFaults();
           if (faults != prevFault.shortValue()) {
-            /*Logger.tag("Spark Max Monitor")
+            Logger.tag("Spark Max Monitor")
             .warn(
                 "Spark Max ID {} faults: {}",
                 sparkMax.getDeviceId(),
-                SparkMaxUtils.faultWordToString(faults));*/
+                SparkMaxUtils.faultWordToString(faults));
           }
           m_sparkMaxs.put(sparkMax, faults);
         });
